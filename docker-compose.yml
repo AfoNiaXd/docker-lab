@@ -1,0 +1,26 @@
+services:
+  frontend:
+    image: afoniaxd/lab-frontend:1.0
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    networks:
+      - appnet
+
+  api:
+    image: containous/whoami
+    networks:
+      - appnet
+
+  logger:
+    image: busybox
+    command: sh -c 'while true; do echo "$$(date) - log entry" >> /data/log.txt; sleep 5; done'
+    volumes:
+      - logger_data:/data
+
+networks:
+  appnet:
+
+volumes:
+  logger_data:
